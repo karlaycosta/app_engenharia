@@ -57,7 +57,7 @@ class Home extends StatelessWidget {
             const SizedBox(
               height: 35,
             ),
-            ValueListenableBuilder(
+            ValueListenableBuilder<String>(
               valueListenable: res,
               builder: (context, value, child) {
                 return Text(
