@@ -1,8 +1,8 @@
-import 'package:app_engenharia/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../utils/laws.dart';
+import '../utils/number_formatter.dart';
+import '../widgets/input_numbers.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -13,9 +13,8 @@ class Home extends StatelessWidget {
     final ac = <num>[0.35, 0.46, 0.68];
     final fc = <num>[45, 30, 15];
     final my = <num>[3.5, 5, 7.5];
-    const lfc = 13.695;
-    final abrams = Abrams(ac: ac, fc: fc, lfc: lfc).calc;
-    final lyse = Lyse(ac: ac, my: my, lac: abrams.toDouble()).calc;
+    final controller = TextEditingController();
+    final controller1 = InputNumbersController();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -23,16 +22,31 @@ class Home extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                InputNumbers(
+                  controller: controller1,
+                  title: 'a/c',
+                ),
+                InputNumbers(
+                  title: 'Fc (Mpa)',
+                ),
+                InputNumbers(
+                  title: 'm (y)',
+                ),
+              ],
+            ),
             SizedBox(
               width: 350,
               child: TextFormField(
+                controller: controller,
                 inputFormatters: [
                   NumberFormatter(),
                 ],
                 decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.edit),
+                  // prefixIcon: Icon(Icons.pin_rounded),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -45,7 +59,16 @@ class Home extends StatelessWidget {
                 fixedSize: const Size(200, 80),
               ),
               onPressed: () {
-                res.value = roundX(Abrams(ac: ac, fc: fc, lfc: lfc).calc, 3);
+                // print(controller1.v1);
+                // final number =
+                //     double.tryParse(controller.text.replaceFirst(',', '.'));
+                // if (number != null) {
+                //   final abrams = Abrams(ac: ac, fc: fc, lfc: number).calc;
+                //   final lyse =
+                //       Lyse(ac: ac, my: my, lac: abrams.toDouble()).calc;
+                //   res.value =
+                //       'Abrams: ${roundX(abrams, 3)}\nLyse: ${roundX(lyse, 3)}';
+                // }
               },
               child: const Text(
                 'Calcular',

@@ -28,7 +28,7 @@ class Abrams extends Laws {
   final double lfc;
   late final double lk1, lk2;
   @override
-  num get calc => logX(lk1 / lfc, lk2);
+  num get calc => lfc <= 0 ? 0 : logX(lk1 / lfc, lk2);
   Abrams({
     required List<num> ac,
     required List<num> fc,
@@ -42,7 +42,7 @@ class Abrams extends Laws {
 class Lyse extends Laws {
   final double lac;
   @override
-  num get calc => k2 * lac + k1;
+  num get calc => lac <= 0 ? 0 : k2 * lac + k1;
   Lyse({
     required List<num> ac,
     required List<num> my,
