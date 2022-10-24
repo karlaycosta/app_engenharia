@@ -6,10 +6,10 @@ class InputNumbers extends StatelessWidget {
   final String title;
   final InputNumbersController? controller;
   InputNumbers({
-    super.key,
+    Key? key,
     this.title = '',
     this.controller,
-  });
+  }) : super(key: key);
 
   final v1 = TextEditingController();
   final v2 = TextEditingController();
@@ -52,6 +52,7 @@ class InputNumbers extends StatelessWidget {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) => controller?._check(),
             ),
             sizedBox,
             TextFormField(
@@ -63,6 +64,7 @@ class InputNumbers extends StatelessWidget {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) => controller?._check(),
             ),
             sizedBox,
             TextFormField(
@@ -74,6 +76,7 @@ class InputNumbers extends StatelessWidget {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) => controller?._check(),
             ),
           ],
         ),
@@ -82,10 +85,19 @@ class InputNumbers extends StatelessWidget {
   }
 }
 
-class InputNumbersController {
-  //Colocar o acesso direto a:
-  // Valor1 -> v1
-  // Valor2 -> v2
-  // Valor3 -> v3
+class InputNumbersController extends ValueNotifier<bool> {
   InputNumbers? _input;
+
+  InputNumbersController() : super(false);
+
+  TextEditingController? get v1 => _input?.v1;
+  TextEditingController? get v2 => _input?.v2;
+  TextEditingController? get v3 => _input?.v3;
+
+  void _check() {
+    final v1 = _input?.v1.text.isNotEmpty ?? false;
+    final v2 = _input?.v2.text.isNotEmpty ?? false;
+    final v3 = _input?.v3.text.isNotEmpty ?? false;
+    value = v1 && v2 && v3;
+  }
 }
