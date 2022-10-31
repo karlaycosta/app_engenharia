@@ -11,14 +11,19 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final res = ValueNotifier<String>('');
-    final controller = TextEditingController();
+    final textController1 = TextEditingController();
+    final textController2 = TextEditingController();
     final controller1 = InputNumbersController();
     final controller2 = InputNumbersController();
     final controller3 = InputNumbersController();
+    final controller4 = InputNumbersController();
     final ativar = Activator(list: [
+      textController1,
+      // textController2,
       controller1,
       controller2,
       controller3,
+      // controller4,
     ]);
     return Scaffold(
       appBar: AppBar(
@@ -43,12 +48,16 @@ class Home extends StatelessWidget {
                   controller: controller3,
                   title: 'm (y)',
                 ),
+                InputNumbers(
+                  controller: controller4,
+                  title: 'g/cm³',
+                ),
               ],
             ),
             SizedBox(
               width: 350,
               child: TextFormField(
-                controller: controller,
+                controller: textController1,
                 inputFormatters: [
                   NumberFormatter(),
                 ],
@@ -56,6 +65,23 @@ class Home extends StatelessWidget {
                   // prefixIcon: Icon(Icons.pin_rounded),
                   border: OutlineInputBorder(),
                   label: Text('Fc'),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 35,
+            ),
+            SizedBox(
+              width: 350,
+              child: TextFormField(
+                controller: textController2,
+                inputFormatters: [
+                  NumberFormatter(),
+                ],
+                decoration: const InputDecoration(
+                  // prefixIcon: Icon(Icons.pin_rounded),
+                  border: OutlineInputBorder(),
+                  label: Text('Teor de Argamassa'),
                 ),
               ),
             ),
@@ -79,21 +105,23 @@ class Home extends StatelessWidget {
                       ? () {
                           // Colocar os valores do InputNumbers(a/c)
                           // dentro da lista "listaAc"
-                          final listaAc = <num>[];
+                          final listaAc = controller1.listNumbers;
                           // Colocar os valores do InputNumbers(Fc (Mpa))
                           // dentro da lista "listaFc"
-                          final listaFc = <num>[];
+                          final listaFc = controller2.listNumbers;
                           // Colocar os valores do InputNumbers(my (y))
                           // dentro da lista "listaMy"
-                          final listaMy = <num>[];
-                          final number = double.tryParse(
-                              controller.text.replaceFirst(',', '.'));
-                          // Só irá calcular se 
-                          if (number != null) {
+                          final listaMy = controller3.listNumbers;
+                          final fcValue = convert(textController1.text);
+                          // Só irá calcular se "Fc" tiver um valor
+                          if (fcValue != null &&
+                              listaAc != null &&
+                              listaFc != null &&
+                              listaMy != null) {
                             final abrams = Abrams(
                               ac: listaAc,
                               fc: listaFc,
-                              lfc: number,
+                              lfc: fcValue,
                             ).calc;
                             final lyse = Lyse(
                               ac: listaAc,
@@ -101,7 +129,7 @@ class Home extends StatelessWidget {
                               lac: abrams.toDouble(),
                             ).calc;
                             res.value =
-                                'Abrams: ${roundX(abrams, 3)}\nLyse: ${roundX(lyse, 3)}';
+                                'Abrams: ${roundX(abrams, 3)}\nLyse: ${roundX(lyse, 3)}\nMolinari: ???';
                           }
                         }
                       : null,

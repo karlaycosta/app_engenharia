@@ -1,3 +1,4 @@
+import 'package:app_engenharia/utils/activator.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/number_formatter.dart';
@@ -93,6 +94,15 @@ class InputNumbersController extends ValueNotifier<bool> {
   TextEditingController? get v1 => _input?.v1;
   TextEditingController? get v2 => _input?.v2;
   TextEditingController? get v3 => _input?.v3;
+  List<num>? get listNumbers {
+    if (value) {
+      final v1 = convert(_input!.v1.text);
+      final v2 = convert(_input!.v2.text);
+      final v3 = convert(_input!.v3.text);
+      return <num>[v1!, v2!, v3!];
+    }
+    return null;
+  }
 
   void _check() {
     final v1 = _input?.v1.text.isNotEmpty ?? false;
